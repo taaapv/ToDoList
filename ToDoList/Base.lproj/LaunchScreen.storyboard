@@ -33,19 +33,18 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon" translatesAutoresizingMaskIntoConstraints="NO" id="zcD-wS-Jra">
-                                <rect key="frame" x="120" y="178" width="174" height="78"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconData" translatesAutoresizingMaskIntoConstraints="NO" id="zcD-wS-Jra">
+                                <rect key="frame" x="96" y="182" width="222" height="103"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemGrayColor"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="zcD-wS-Jra" secondAttribute="bottom" constant="606" id="1Bt-af-F4R"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="zcD-wS-Jra" secondAttribute="bottom" constant="577" id="1Bt-af-F4R"/>
                             <constraint firstItem="pgU-Wo-7v3" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="NZw-Ph-t97"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="zcD-wS-Jra" secondAttribute="trailing" constant="120" id="R6x-1W-eE0"/>
-                            <constraint firstItem="zcD-wS-Jra" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="120" id="Wtj-H6-IP0"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="zcD-wS-Jra" secondAttribute="trailing" constant="96" id="R6x-1W-eE0"/>
                             <constraint firstItem="pgU-Wo-7v3" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="bBe-9x-Mg4"/>
-                            <constraint firstItem="zcD-wS-Jra" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="134" id="eFk-Hx-6ai"/>
+                            <constraint firstItem="zcD-wS-Jra" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="138" id="eFk-Hx-6ai"/>
                             <constraint firstItem="zcD-wS-Jra" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="nUx-Mg-BC7"/>
                         </constraints>
                     </view>
@@ -56,7 +55,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="icon" width="50" height="50"/>
+        <image name="iconData" width="512" height="512"/>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
