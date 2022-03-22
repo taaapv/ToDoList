@@ -15,7 +15,7 @@ class DetailViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let dest = segue.destination as! TableViewController
         if let noteTF = noteTF.text {
-            notes.append(noteTF)
+            addItem(nameItem: noteTF)
         }
         dest.tableView.reloadData()
     }

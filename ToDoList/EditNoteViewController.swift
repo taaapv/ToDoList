@@ -29,8 +29,10 @@ class EditNoteViewController: UIViewController {
     // Передача данных через segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let dest = segue.destination as! TableViewController
-        notes.remove(at: index)
-        notes.insert(noteTF.text!, at: index)
+        removeItem(at: index)
+        if let noteTF = noteTF.text {
+            insertItem(nameItem: noteTF, at: index)
+        }
         dest.tableView.reloadData()
 
     }

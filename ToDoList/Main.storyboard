@@ -32,6 +32,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Notes" id="d9o-ej-FuQ">
+                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="XLL-KD-0VF">
+                            <connections>
+                                <action selector="pushEditAction:" destination="hLb-dh-tD2" id="cmb-Zl-q2t"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="YHf-pX-2j3">
                             <connections>
                                 <segue destination="3OX-fX-nlM" kind="show" id="9AL-fB-J8h"/>
@@ -109,11 +114,11 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IAv-HN-tVg">
-                                <rect key="frame" x="171.5" y="275" width="71" height="41"/>
+                                <rect key="frame" x="151.5" y="275" width="111.5" height="41"/>
                                 <color key="backgroundColor" systemColor="systemGrayColor"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Save">
+                                <buttonConfiguration key="configuration" style="plain" title="Save edit">
                                     <fontDescription key="titleFontDescription" type="system" pointSize="22"/>
                                 </buttonConfiguration>
                                 <connections>

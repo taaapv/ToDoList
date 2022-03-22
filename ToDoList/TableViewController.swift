@@ -14,7 +14,7 @@ class TableViewController: UITableViewController {
         super.viewDidLoad()
         
         if notes.isEmpty {
-            notes.append("This is note")
+            addItem(nameItem: "This is first note")
         }
 
     }
@@ -46,7 +46,7 @@ class TableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete{
-            notes.remove(at: indexPath.row)
+            removeItem(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             
@@ -65,6 +65,18 @@ class TableViewController: UITableViewController {
         editNoteVC.note = note
         editNoteVC.index = index
         show(editNoteVC, sender: nil)
+    }
+    
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        
+        moveItem(from: sourceIndexPath.row, to: destinationIndexPath.row)
+        
+        tableView.reloadData()
+    }
+    
+    
+    @IBAction func pushEditAction(_ sender: Any) {
+        tableView.setEditing(!tableView.isEditing, animated: true)
     }
     
     // Обратная передача данных через unwind segue
