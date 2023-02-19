@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Protocol about work with tasks
 protocol ITaskManager {
 	func getTaskList() -> [Task]
 	func getComletedTaskList() -> [Task]

@@ -7,11 +7,19 @@
 
 import Foundation
 
+/// Protocol of Task Repository
 protocol ITaskRepository {
+	
+	/// create Tasks from repository
+	/// - Returns: created tasks
 	func createTasks() -> [Task]
 }
 
+/// Class Task Repository with stub data
 class TaskRepositoryStub: ITaskRepository {
+	
+	/// create stub Tasks from repository
+	/// - Returns: created stub tasks
 	func createTasks() -> [Task] {
 		[
 			RegularTask(completed: true, title: "Task1"),
