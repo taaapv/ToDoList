@@ -9,16 +9,15 @@ import Foundation
 
 /// class model Task
 class Task {
-	
-	/// completed or not of task
-	var completed = false
-	
 	/// title of task
 	var title: String
 	
+	/// completed or not task
+	var completed = false
+	
 	/// Initialization of task
 	/// - Parameters:
-	///   - completed: completed or not of task
+	///   - completed: completed or not task
 	///   - title: title of task
 	init(completed: Bool = false, title: String) {
 		self.completed = completed
