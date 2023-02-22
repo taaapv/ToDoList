@@ -22,12 +22,23 @@ final class TaskListViewController: UIViewController {
 	@IBOutlet weak var tableView: UITableView!
 	
 	private var viewData: TaskListViewModel.ViewData = TaskListViewModel.ViewData(tasksSortedBySection: [])
-	var presenter: ITaskListPresenter?
+	private var presenter: ITaskListPresenter?
+	var router: TaskListDataPassing?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		title = "To Do List"
+		assembly()
 		presenter?.viewLoaded()
+	}
+	
+	private func assembly() {
+		let taskManager: ITaskManager = OrderedTaskManager(taskManager: TaskManager())
+		let repository: ITaskRepository = TaskRepositoryStub()
+		taskManager.addTasksToTaskList(tasks: repository.createTasks())
+		let sectionManager = SectionForTaskManagerAdapter(taskManager: taskManager)
+		presenter = TaskListPresenter(view: self, sectionManager: sectionManager)
+		router = TaskListRouter(view: self, dataStore: presenter as! TaskListDataStore)
 	}
 }
 

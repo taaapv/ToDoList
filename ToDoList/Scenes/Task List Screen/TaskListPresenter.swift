@@ -7,6 +7,11 @@
 
 import Foundation
 
+protocol TaskListDataStore {
+	var email: String? { get set }
+	var password: String? { get set }
+}
+
 /// Protocol Task List Presenter
 protocol ITaskListPresenter {
 	func viewLoaded()
@@ -14,7 +19,9 @@ protocol ITaskListPresenter {
 }
 
 /// Task List Presenter with business logic
-final class TaskListPresenter: ITaskListPresenter {
+final class TaskListPresenter: ITaskListPresenter, TaskListDataStore {
+	var email: String?
+	var password: String?
 	
 	private weak var view: ITaskListViewController!
 	private var sectionManager: ISectionForTaskManagerAdapter!

@@ -25,18 +25,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	private func assembly() -> UIViewController {
 		let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
 		
-		guard let taskListViewController = storyboard.instantiateViewController(withIdentifier: "TaskListViewController") as? TaskListViewController else {
-			fatalError("TaskListViewController not exist in Main.storyboard")
+		guard let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController else {
+			fatalError("LoginViewController not exist in Main.storyboard")
 		}
 		
-		let taskManager: ITaskManager = OrderedTaskManager(taskManager: TaskManager())
-		let repository: ITaskRepository = TaskRepositoryStub()
-		taskManager.addTasksToTaskList(tasks: repository.createTasks())
-		let sectionManager = SectionForTaskManagerAdapter(taskManager: taskManager)
-		let taskListPresenter = TaskListPresenter(view: taskListViewController, sectionManager: sectionManager)
-		taskListViewController.presenter = taskListPresenter
+		let worker = LoginWorker()
+		let presenter = LoginPresenter(view: loginViewController)
+		let interastor = LoginInteractor(worker: worker, presenter: presenter)
+		let router = LoginRouter(viewController: loginViewController, dataStore: interastor)
 		
-		return taskListViewController
+		loginViewController.interastor = interastor
+		loginViewController.router = router
+		
+		return loginViewController
 	}
 }
 
