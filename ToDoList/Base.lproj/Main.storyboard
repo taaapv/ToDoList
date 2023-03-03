@@ -85,7 +85,6 @@
                                 <state key="normal" title="Login"/>
                                 <connections>
                                     <action selector="loginButtonTapped:" destination="JCV-XP-MKG" eventType="touchUpInside" id="1LH-Hl-cfQ"/>
-                                    <segue destination="Wop-WM-cqw" kind="presentation" identifier="TaskList" modalPresentationStyle="fullScreen" id="44B-JU-DRe"/>
                                 </connections>
                             </button>
                         </subviews>

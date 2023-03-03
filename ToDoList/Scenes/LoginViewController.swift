@@ -19,17 +19,6 @@ class LoginViewController: UIViewController {
 	var interastor: ILoginInteractor?
 	var router: (NSObjectProtocol & ILoginRouter & LoginRouterDataPassing)?
 	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if let scene = segue.identifier {
-			let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
-			if let router = router {
-				if router.responds(to: selector) {
-					router.perform(selector, with: segue)
-				}
-			}
-		}
-	}
-	
 	@IBAction func loginButtonTapped(_ sender: UIButton) {
 		if let login = loginTextField.text, let password = passwordTextField.text {
 			let request = LoginModels.Request(
@@ -43,25 +32,18 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController: ILoginViewController {
 	func render(viewModel: LoginModels.ViewModel) {
-		let alert: UIAlertController
-		
 		switch viewModel.success {
 		case true:
-			alert = UIAlertController(
-				title: "Success!",
-				message: "Hi, \(viewModel.userName)",
-				preferredStyle: .alert
-			)
+			router?.routeToTaskList()
 		case false:
-			alert = UIAlertController(
+			let alert = UIAlertController(
 				title: "Failure!",
 				message: "User did not exist",
 				preferredStyle: .alert
 			)
+			let action = UIAlertAction(title: "OK", style: .default)
+			alert.addAction(action)
+			present(alert, animated: true)
 		}
-		let action = UIAlertAction(title: "OK", style: .default)
-		alert.addAction(action)
-		present(alert, animated: true)
-		
 	}
 }

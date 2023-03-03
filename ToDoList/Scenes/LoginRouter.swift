@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 @objc protocol ILoginRouter {
-	func routeToTaskList(segue: UIStoryboardSegue?)
+	func routeToTaskList()
 }
 
 protocol LoginRouterDataPassing {
@@ -25,22 +25,16 @@ class LoginRouter: NSObject, ILoginRouter, LoginRouterDataPassing {
 		self.dataStore = dataStore
 	}
 	
-	func routeToTaskList(segue: UIStoryboardSegue?) {
-		if let segue = segue {
-			let destinationVC = segue.destination as! TaskListViewController
-			var destinationDS = destinationVC.router!.dataStore!
-			passDataToTaskList(sourse: dataStore!, destination: &destinationDS)
-		} else {
-			let storyboard = UIStoryboard(name: "Main", bundle: nil)
-			let destinationVC = storyboard.instantiateViewController(withIdentifier: "TaskListViewController") as! TaskListViewController
-			var destinationDS = destinationVC.router!.dataStore!
-			passDataToTaskList(sourse: dataStore!, destination: &destinationDS)
-			navigateToTaskList(sourse: viewController!, destination: destinationVC)
-		}
+	func routeToTaskList() {
+		let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+		let destinationVC = storyboard.instantiateViewController(withIdentifier: "TaskListViewController") as! TaskListViewController
+		var destinationDS = destinationVC.router!.dataStore!
+		passDataToTaskList(sourse: dataStore!, destination: &destinationDS)
+		navigateToTaskList(sourse: viewController!, destination: destinationVC)
 	}
 	
 	private func navigateToTaskList(sourse: LoginViewController, destination: TaskListViewController) {
-		sourse.show(destination, sender: nil)
+		sourse.navigationController?.pushViewController(destination, animated: true)
 	}
 	
 	private func passDataToTaskList(sourse: LoginDataStore, destination: inout TaskListDataStore) {

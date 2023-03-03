@@ -18,18 +18,23 @@ protocol ITaskListViewController: AnyObject {
 /// Main  class Task List View Controller
 final class TaskListViewController: UIViewController {
 	
-	/// table View with task list
 	@IBOutlet weak var tableView: UITableView!
 	
 	private var viewData: TaskListViewModel.ViewData = TaskListViewModel.ViewData(tasksSortedBySection: [])
-	private var presenter: ITaskListPresenter?
+	private var interactor: ITaskListInteractor?
 	var router: TaskListDataPassing?
+	
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		
+		assembly()
+	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
 		title = "To Do List"
-		assembly()
-		presenter?.viewLoaded()
+		interactor?.viewLoaded()
 	}
 	
 	private func assembly() {
@@ -37,8 +42,10 @@ final class TaskListViewController: UIViewController {
 		let repository: ITaskRepository = TaskRepositoryStub()
 		taskManager.addTasksToTaskList(tasks: repository.createTasks())
 		let sectionManager = SectionForTaskManagerAdapter(taskManager: taskManager)
-		presenter = TaskListPresenter(view: self, sectionManager: sectionManager)
-		router = TaskListRouter(view: self, dataStore: presenter as! TaskListDataStore)
+		let worker = TaskListWorker()
+		let presenter = TaskListPresenter(view: self)
+		interactor = TaskListInteractor(worker: worker, presenter: presenter, sectionManager: sectionManager)
+		router = TaskListRouter(view: self, dataStore: interactor as! TaskListDataStore)
 	}
 }
 
@@ -90,14 +97,12 @@ extension TaskListViewController: UITableViewDataSource {
 extension TaskListViewController: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
-		presenter?.cellTapped(at: indexPath)
+		interactor?.taskSelected(at: indexPath)
 	}
 }
 
 extension TaskListViewController: ITaskListViewController {
 	
-	/// Render view Data
-	/// - Parameter viewData: View Data with data to present
 	func render(viewData: TaskListViewModel.ViewData) {
 		self.viewData = viewData
 		tableView.reloadData()
