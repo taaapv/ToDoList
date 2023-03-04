@@ -10,7 +10,7 @@ import Foundation
 enum TaskListModels {
 	
 	struct Response {
-		
+		let sections: [TaskListViewModel.ViewData.Section]
 	}
 	
 	struct ViewModel {

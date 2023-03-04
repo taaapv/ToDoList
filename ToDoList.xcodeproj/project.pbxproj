@@ -154,8 +154,8 @@
 				8F57228829B2212E00B280B7 /* TaskListModels.swift */,
 				8FBE05FD2996DFDF008D0AD5 /* TaskListViewController.swift */,
 				8F57228429B2133F00B280B7 /* TaskListInteractor.swift */,
-				8F6D8FD229A0AD10001F83B6 /* TaskListPresenter.swift */,
 				8F57228629B2137200B280B7 /* TaskListWorker.swift */,
+				8F6D8FD229A0AD10001F83B6 /* TaskListPresenter.swift */,
 				8F62330429A6A4A600CBB8D0 /* TaskListRouter.swift */,
 			);
 			path = "Task List Screen";

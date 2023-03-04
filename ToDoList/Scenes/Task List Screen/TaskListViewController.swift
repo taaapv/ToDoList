@@ -38,13 +38,10 @@ final class TaskListViewController: UIViewController {
 	}
 	
 	private func assembly() {
-		let taskManager: ITaskManager = OrderedTaskManager(taskManager: TaskManager())
-		let repository: ITaskRepository = TaskRepositoryStub()
-		taskManager.addTasksToTaskList(tasks: repository.createTasks())
-		let sectionManager = SectionForTaskManagerAdapter(taskManager: taskManager)
+		
 		let worker = TaskListWorker()
 		let presenter = TaskListPresenter(view: self)
-		interactor = TaskListInteractor(worker: worker, presenter: presenter, sectionManager: sectionManager)
+		interactor = TaskListInteractor(worker: worker, presenter: presenter)
 		router = TaskListRouter(view: self, dataStore: interactor as! TaskListDataStore)
 	}
 }
