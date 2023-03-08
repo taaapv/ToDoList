@@ -7,18 +7,18 @@
 
 import Foundation
 
-protocol LoginDataStore {
-	var email: String? { get set }
-	var password: String? { get set }
+protocol ILoginDataStore {
+	var email: String { get set }
+	var password: String { get set }
 }
 
 protocol ILoginInteractor {
 	func login(request: LoginModels.Request)
 }
 
-class LoginInteractor: ILoginInteractor, LoginDataStore {
-	var email: String?
-	var password: String?
+class LoginInteractor: ILoginInteractor, ILoginDataStore {
+	var email = ""
+	var password = ""
 	
 	private var worker: ILoginWorker
 	private var presenter: ILoginPresenter?
@@ -31,9 +31,6 @@ class LoginInteractor: ILoginInteractor, LoginDataStore {
 	func login(request: LoginModels.Request) {
 		email = request.email
 		password = request.password
-		
-		print(email ?? "no email")
-		print(password ?? "no password")
 		
 		let result = worker.login(
 			login: request.email,

@@ -42,7 +42,7 @@ final class TaskListViewController: UIViewController {
 		let worker = TaskListWorker()
 		let presenter = TaskListPresenter(view: self)
 		interactor = TaskListInteractor(worker: worker, presenter: presenter)
-		router = TaskListRouter(view: self, dataStore: interactor as! TaskListDataStore)
+		router = TaskListRouter(view: self, dataStore: interactor as! ITaskListDataStore)
 	}
 }
 

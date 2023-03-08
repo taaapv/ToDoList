@@ -47,7 +47,7 @@ final class SectionForTaskManagerAdapter: ISectionForTaskManagerAdapter {
 		sectionsOfTasks
 	}
 	
-	/// get Section Index from section
+	/// get Index from section
 	/// - Parameter section: Section Of Tasks
 	/// - Returns: Section Index
 	func getSectionIndex(section: SectionOfTasks) -> Int {

@@ -13,14 +13,14 @@ import UIKit
 }
 
 protocol LoginRouterDataPassing {
-	var dataStore: LoginDataStore? { get}
+	var dataStore: ILoginDataStore? { get}
 }
 
 class LoginRouter: NSObject, ILoginRouter, LoginRouterDataPassing {
 	weak var viewController: LoginViewController?
-	var dataStore: LoginDataStore?
+	var dataStore: ILoginDataStore?
 	
-	init(viewController: LoginViewController, dataStore: LoginDataStore) {
+	init(viewController: LoginViewController, dataStore: ILoginDataStore) {
 		self.viewController = viewController
 		self.dataStore = dataStore
 	}
@@ -37,7 +37,7 @@ class LoginRouter: NSObject, ILoginRouter, LoginRouterDataPassing {
 		sourse.navigationController?.pushViewController(destination, animated: true)
 	}
 	
-	private func passDataToTaskList(sourse: LoginDataStore, destination: inout TaskListDataStore) {
+	private func passDataToTaskList(sourse: ILoginDataStore, destination: inout ITaskListDataStore) {
 		destination.email = sourse.email
 		destination.password = sourse.password
 	}

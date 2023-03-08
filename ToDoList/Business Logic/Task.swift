@@ -17,7 +17,7 @@ class Task {
 	
 	/// Initialization of task
 	/// - Parameters:
-	///   - completed: completed or not task
+	///   - completed: is that task complete or not
 	///   - title: title of task
 	init(completed: Bool = false, title: String) {
 		self.completed = completed
@@ -54,5 +54,18 @@ final class ImportantTask: Task {
 	init(completed: Bool = false, title: String, priority: Priority) {
 		self.priority = priority
 		super.init(title: title)
+	}
+}
+
+extension ImportantTask.Priority: CustomStringConvertible {
+	var description: String {
+		switch self {
+		case .low:
+			return "!"
+		case .medium:
+			return "!!"
+		case .high:
+			return "!!!"
+		}
 	}
 }

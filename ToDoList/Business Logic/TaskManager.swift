@@ -7,10 +7,17 @@
 
 import Foundation
 
+/// Protocol about work with tasks
+protocol ITaskManager {
+	func getTaskList() -> [Task]
+	func getComletedTaskList() -> [Task]
+	func getNotComletedTaskList() -> [Task]
+	func addTasksToTaskList(tasks: [Task])
+}
+
 /// Сlass providing work with tasks
-final class TaskManager {
+final class TaskManager: ITaskManager {
 	private var taskList: [Task] = []
-	
 	
 	/// Get task list
 	/// - Returns: Task List

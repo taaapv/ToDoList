@@ -8,13 +8,9 @@
 import Foundation
 
 protocol ITaskListWorker {
-	func createTasks() -> [Task]
+
 }
 
 class TaskListWorker: ITaskListWorker {
-	func createTasks() -> [Task] {
-		let repository: ITaskRepository = TaskRepositoryStub()
-		let tasks = repository.createTasks()
-		return tasks
-	}
+
 }

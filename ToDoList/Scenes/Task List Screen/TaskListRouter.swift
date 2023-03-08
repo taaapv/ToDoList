@@ -8,14 +8,14 @@
 import Foundation
 
 protocol TaskListDataPassing {
-	var dataStore: TaskListDataStore? { get }
+	var dataStore: ITaskListDataStore? { get }
 }
 
 class TaskListRouter: TaskListDataPassing {
 	weak var view: TaskListViewController?
-	var dataStore: TaskListDataStore?
+	var dataStore: ITaskListDataStore?
 	
-	init(view: TaskListViewController, dataStore: TaskListDataStore) {
+	init(view: TaskListViewController, dataStore: ITaskListDataStore) {
 		self.view = view
 		self.dataStore = dataStore
 	}
