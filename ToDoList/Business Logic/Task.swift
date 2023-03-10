@@ -8,7 +8,11 @@
 import Foundation
 
 /// class model Task
-class Task {
+class Task: Equatable {
+	static func == (lhs: Task, rhs: Task) -> Bool {
+		true
+	}
+	
 	/// title of task
 	var title: String
 	

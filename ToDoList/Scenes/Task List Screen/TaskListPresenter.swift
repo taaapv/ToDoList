@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ITaskListPresenter {
-	func presentViewData(viewData: TaskListViewModel.ViewData)
+	func presentViewData(sectionManager: ISectionForTaskManagerAdapter)
 }
 
 final class TaskListPresenter: ITaskListPresenter {
@@ -20,7 +20,40 @@ final class TaskListPresenter: ITaskListPresenter {
 		self.view = view
 	}
 	
-	func presentViewData(viewData: TaskListViewModel.ViewData) {
+	func presentViewData(sectionManager: ISectionForTaskManagerAdapter) {
+		let viewData = mapViewData(sectionManager: sectionManager)
 		view?.render(viewData: viewData)
+	}
+	
+	private func mapViewData(sectionManager: ISectionForTaskManagerAdapter) -> TaskListViewModel.ViewData {
+		var sections = [TaskListViewModel.ViewData.Section]()
+		
+		for section in sectionManager.getSections() {
+			let sectionData = TaskListViewModel.ViewData.Section(
+				title: section.title,
+				tasks: mapTasksData(tasks: sectionManager.getTasksForSection(section: section))
+			)
+			sections.append(sectionData)
+		}
+		return TaskListViewModel.ViewData(tasksSortedBySection: sections)
+	}
+	
+	private func mapTasksData(tasks: [Task]) -> [TaskListViewModel.ViewData.Task] {
+		tasks.map { mapTaskData(task: $0) }
+	}
+	
+	private func mapTaskData(task: Task) -> TaskListViewModel.ViewData.Task {
+		if let task = task as? ImportantTask {
+			let result = TaskListViewModel.ViewData.ImportantTask(
+				name: task.title,
+				isDone: task.completed,
+				isOverdue: task.dateOfCompletion! < Date(),
+				deadline: "Deadline: \(String(describing: task.dateOfCompletion))",
+				priority: "\(task.priority)"
+			)
+			return .importantTask(result)
+		} else {
+			return .regularTask(TaskListViewModel.ViewData.RegularTask(name: task.title, isDone: task.completed))
+		}
 	}
 }
