@@ -19,11 +19,9 @@ class LoginPresenter: ILoginPresenter {
 	}
 	
 	func present(response: LoginModels.Response) {
-		let viewModel = LoginModels.ViewModel(
-			success: response.success,
-			userName: response.login,
-			lastLoginDate: "\(response.lastLoginDate)"
-		)
+		let viewModel: LoginModels.ViewModel = response.success ?
+			.success :
+			.failure("Wrong login or password!")
 		view?.render(viewModel: viewModel)
 	}
 }

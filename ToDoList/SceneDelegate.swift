@@ -15,30 +15,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		
 		guard let scene = (scene as? UIWindowScene) else { return }
 		let window = UIWindow(windowScene: scene)
-		let vc = assembly()
-		let navC = UINavigationController(rootViewController: vc)
 		
-		window.rootViewController = navC
+		window.rootViewController = assembly()
 		window.makeKeyAndVisible()
 		
 		self.window = window
 	}
 	
 	private func assembly() -> UIViewController {
-		let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+		let loginViewController = LoginAssembler().assembly()
+		let taskListViewController = TaskListAssembler().assembly()
 		
-		guard let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController else {
-			fatalError("LoginViewController not exist in Main.storyboard")
+		let router = LoginRouter(
+			loginViewController: loginViewController,
+			taskListViewController: taskListViewController
+		)
+		
+		if let loginViewController = loginViewController as? LoginViewController {
+			loginViewController.router = router
 		}
-		
-		let worker = LoginWorker()
-		let presenter = LoginPresenter(view: loginViewController)
-		let interastor = LoginInteractor(worker: worker, presenter: presenter)
-		let router = LoginRouter(viewController: loginViewController, dataStore: interastor)
-		
-		loginViewController.interastor = interastor
-		loginViewController.router = router
-		
 		return loginViewController
 	}
 }

@@ -7,8 +7,22 @@
 
 import Foundation
 
-enum TaskListViewModel {
-	struct ViewData {
+enum TaskListModels {
+	enum Request {
+		struct TaskSelected {
+			let indexPath: IndexPath
+		}
+	}
+	
+	struct Response {
+		struct SectionWithTasks {
+			let section: Section
+			let tasks: [Task]
+		}
+		let data: [SectionWithTasks]
+	}
+	
+	struct ViewModel {
 		struct RegularTask {
 			let name: String
 			let isDone: Bool
@@ -32,6 +46,6 @@ enum TaskListViewModel {
 			let tasks: [Task]
 		}
 		
-		let tasksSortedBySection: [Section]
+		let tasksSortedBySections: [Section]
 	}
 }

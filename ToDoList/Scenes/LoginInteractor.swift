@@ -7,19 +7,11 @@
 
 import Foundation
 
-protocol ILoginDataStore {
-	var email: String { get set }
-	var password: String { get set }
-}
-
 protocol ILoginInteractor {
 	func login(request: LoginModels.Request)
 }
 
-class LoginInteractor: ILoginInteractor, ILoginDataStore {
-	var email = ""
-	var password = ""
-	
+class LoginInteractor: ILoginInteractor {
 	private var worker: ILoginWorker
 	private var presenter: ILoginPresenter?
 	
@@ -29,18 +21,11 @@ class LoginInteractor: ILoginInteractor, ILoginDataStore {
 	}
 	
 	func login(request: LoginModels.Request) {
-		email = request.email
-		password = request.password
-		
 		let result = worker.login(
 			login: request.email,
 			password: request.password
 		)
-		let response = LoginModels.Response(
-			success: result.success == 1,
-			login: result.login,
-			lastLoginDate: result.lastLoginDate
-		)
+		let response = LoginModels.Response(success: result)
 		presenter?.present(response: response)
 	}
 }

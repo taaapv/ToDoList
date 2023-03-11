@@ -6,49 +6,40 @@
 //
 
 import Foundation
-
-protocol ITaskListDataStore {
-	var email: String { get set }
-	var password: String { get set }
-}
-
 protocol ITaskListInteractor {
 	func viewLoaded()
 	func taskSelected(at indexPath: IndexPath)
 }
 
-final class TaskListInteractor: ITaskListInteractor, ITaskListDataStore {
-	var email = ""
-	var password = ""
-	
-	
+final class TaskListInteractor: ITaskListInteractor {
+
 	private var presenter: ITaskListPresenter?
-	private var taskManager: ITaskManager!
-	private var sectionManager: ISectionForTaskManagerAdapter!
+	private var sectionManager: ISectionForTaskManagerAdapter
 	
-	
-	init(worker: ITaskListWorker, presenter: ITaskListPresenter) {
+	init(presenter: ITaskListPresenter, sectionManager: ISectionForTaskManagerAdapter) {
 		self.presenter = presenter
+		self.sectionManager = sectionManager
 	}
 	
 	func viewLoaded() {
-		taskManager = OrderedTaskManager(taskManager: TaskManager())
-		addStubTasks()
-		sectionManager = SectionForTaskManagerAdapter(taskManager: taskManager)
-		presenter?.presentViewData(sectionManager: sectionManager)
+		var responseData = [TaskListModels.Response.SectionWithTasks]()
+		let sections = sectionManager.getSections()
+		for section in sections {
+			let tasks = sectionManager.getTasksForSection(section: section)
+			let sectionWithTasks = TaskListModels.Response.SectionWithTasks(
+				section: section,
+				tasks: tasks
+			)
+			responseData.append(sectionWithTasks)
+		}
+		let response = TaskListModels.Response(data: responseData)
+		presenter?.present(response: response)
 	}
 	
 	func taskSelected(at indexPath: IndexPath) {
 		let section = sectionManager.getSectionForIndex(index: indexPath.section)
 		let task = sectionManager.getTasksForSection(section: section)[indexPath.row]
 		task.completed.toggle()
-		presenter?.presentViewData(sectionManager: sectionManager)
-	}
-	
-	private func addStubTasks() {
-		let repository: ITaskRepository = TaskRepositoryStub()
-		let tasks = repository.createTasks()
-		
-		taskManager.addTasksToTaskList(tasks: tasks)
+		viewLoaded()
 	}
 }

@@ -8,43 +8,37 @@
 import Foundation
 
 protocol ITaskListPresenter {
-	func presentViewData(sectionManager: ISectionForTaskManagerAdapter)
+	func present(response: TaskListModels.Response)
 }
 
 final class TaskListPresenter: ITaskListPresenter {
 
+	private weak var viewController: ITaskListViewController?
 	
-	private weak var view: ITaskListViewController?
-	
-	init(view: ITaskListViewController) {
-		self.view = view
+	init(viewController: ITaskListViewController) {
+		self.viewController = viewController
 	}
 	
-	func presentViewData(sectionManager: ISectionForTaskManagerAdapter) {
-		let viewData = mapViewData(sectionManager: sectionManager)
-		view?.render(viewData: viewData)
-	}
-	
-	private func mapViewData(sectionManager: ISectionForTaskManagerAdapter) -> TaskListViewModel.ViewData {
-		var sections = [TaskListViewModel.ViewData.Section]()
-		
-		for section in sectionManager.getSections() {
-			let sectionData = TaskListViewModel.ViewData.Section(
-				title: section.title,
-				tasks: mapTasksData(tasks: sectionManager.getTasksForSection(section: section))
+	func present(response: TaskListModels.Response) {
+		var sections = [TaskListModels.ViewModel.Section]()
+		for section in response.data {
+			let sectionData = TaskListModels.ViewModel.Section(
+				title: section.section.title,
+				tasks: mapTasksData(tasks: section.tasks)
 			)
 			sections.append(sectionData)
 		}
-		return TaskListViewModel.ViewData(tasksSortedBySection: sections)
+		let viewModel = TaskListModels.ViewModel(tasksSortedBySections: sections)
+		viewController?.render(viewModel: viewModel)
 	}
 	
-	private func mapTasksData(tasks: [Task]) -> [TaskListViewModel.ViewData.Task] {
+	private func mapTasksData(tasks: [Task]) -> [TaskListModels.ViewModel.Task] {
 		tasks.map { mapTaskData(task: $0) }
 	}
 	
-	private func mapTaskData(task: Task) -> TaskListViewModel.ViewData.Task {
+	private func mapTaskData(task: Task) -> TaskListModels.ViewModel.Task {
 		if let task = task as? ImportantTask {
-			let result = TaskListViewModel.ViewData.ImportantTask(
+			let result = TaskListModels.ViewModel.ImportantTask(
 				name: task.title,
 				isDone: task.completed,
 				isOverdue: task.dateOfCompletion! < Date(),
@@ -53,7 +47,10 @@ final class TaskListPresenter: ITaskListPresenter {
 			)
 			return .importantTask(result)
 		} else {
-			return .regularTask(TaskListViewModel.ViewData.RegularTask(name: task.title, isDone: task.completed))
+			return .regularTask(TaskListModels.ViewModel.RegularTask(
+				name: task.title,
+				isDone: task.completed)
+			)
 		}
 	}
 }

@@ -15,13 +15,10 @@ enum LoginModels {
 	
 	struct Response {
 		let success: Bool
-		let login: String
-		let lastLoginDate: Date
 	}
 	
-	struct ViewModel {
-		let success: Bool
-		let userName: String
-		let lastLoginDate: String
+	enum ViewModel {
+		case success
+		case failure(String)
 	}
 }

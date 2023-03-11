@@ -12,7 +12,7 @@ protocol ITaskListViewController: AnyObject {
 	
 	/// render data
 	/// - Parameter viewData: Structure View Data with data to present
-	func render(viewData: TaskListViewModel.ViewData)
+	func render(viewModel: TaskListModels.ViewModel)
 }
 
 /// Main  class Task List View Controller
@@ -20,15 +20,10 @@ final class TaskListViewController: UIViewController {
 	
 	@IBOutlet weak var tableView: UITableView!
 	
-	private var viewData: TaskListViewModel.ViewData = TaskListViewModel.ViewData(tasksSortedBySection: [])
-	private var interactor: ITaskListInteractor?
-	var router: TaskListDataPassing?
-	
-	required init?(coder: NSCoder) {
-		super.init(coder: coder)
-		
-		assembly()
-	}
+	var interactor: ITaskListInteractor?
+	private var viewModel: TaskListModels.ViewModel = TaskListModels.ViewModel(
+		tasksSortedBySections: []
+	)
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -36,33 +31,28 @@ final class TaskListViewController: UIViewController {
 		title = "To Do List"
 		interactor?.viewLoaded()
 	}
-	
-	private func assembly() {
-		
-		let worker = TaskListWorker()
-		let presenter = TaskListPresenter(view: self)
-		interactor = TaskListInteractor(worker: worker, presenter: presenter)
-		router = TaskListRouter(view: self, dataStore: interactor as! ITaskListDataStore)
-	}
 }
 
 extension TaskListViewController: UITableViewDataSource {
 	func numberOfSections(in tableView: UITableView) -> Int {
-		viewData.tasksSortedBySection.count
+		viewModel.tasksSortedBySections.count
 	}
 	
 	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		viewData.tasksSortedBySection[section].title
+		viewModel.tasksSortedBySections[section].title
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		let section = viewData.tasksSortedBySection[section]
+		let section = viewModel.tasksSortedBySections[section]
 		return section.tasks.count
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath)
-		let tasks = viewData.tasksSortedBySection[indexPath.section].tasks
+		let cell = tableView.dequeueReusableCell(
+			withIdentifier: "taskCell",
+			for: indexPath
+		)
+		let tasks = viewModel.tasksSortedBySections[indexPath.section].tasks
 		let taskData = tasks[indexPath.row]
 		
 		var content = cell.defaultContentConfiguration()
@@ -100,8 +90,8 @@ extension TaskListViewController: UITableViewDelegate {
 
 extension TaskListViewController: ITaskListViewController {
 	
-	func render(viewData: TaskListViewModel.ViewData) {
-		self.viewData = viewData
+	func render(viewModel: TaskListModels.ViewModel) {
+		self.viewModel = viewModel
 		tableView.reloadData()
 	}
 }

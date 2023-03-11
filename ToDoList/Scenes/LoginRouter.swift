@@ -10,35 +10,30 @@ import UIKit
 
 @objc protocol ILoginRouter {
 	func routeToTaskList()
+	func showError(with message: String)
 }
 
-protocol LoginRouterDataPassing {
-	var dataStore: ILoginDataStore? { get}
-}
-
-class LoginRouter: NSObject, ILoginRouter, LoginRouterDataPassing {
-	weak var viewController: LoginViewController?
-	var dataStore: ILoginDataStore?
+class LoginRouter: NSObject, ILoginRouter {
+	private weak var loginViewController: UIViewController!
+	private let taskListViewController: UIViewController
 	
-	init(viewController: LoginViewController, dataStore: ILoginDataStore) {
-		self.viewController = viewController
-		self.dataStore = dataStore
+	init(loginViewController: UIViewController, taskListViewController: UIViewController) {
+		self.loginViewController = loginViewController
+		self.taskListViewController = taskListViewController
 	}
 	
 	func routeToTaskList() {
-		let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-		let destinationVC = storyboard.instantiateViewController(withIdentifier: "TaskListViewController") as! TaskListViewController
-		var destinationDS = destinationVC.router!.dataStore!
-		passDataToTaskList(sourse: dataStore!, destination: &destinationDS)
-		navigateToTaskList(sourse: viewController!, destination: destinationVC)
+		loginViewController.present(taskListViewController, animated: true)
 	}
 	
-	private func navigateToTaskList(sourse: LoginViewController, destination: TaskListViewController) {
-		sourse.navigationController?.pushViewController(destination, animated: true)
-	}
-	
-	private func passDataToTaskList(sourse: ILoginDataStore, destination: inout ITaskListDataStore) {
-		destination.email = sourse.email
-		destination.password = sourse.password
+	func showError(with message: String) {
+		let alert = UIAlertController(
+			title: "Failure!",
+			message: message,
+			preferredStyle: .alert
+		)
+		let action = UIAlertAction(title: "OK", style: .default)
+		alert.addAction(action)
+		loginViewController.present(alert, animated: true)
 	}
 }

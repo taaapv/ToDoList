@@ -7,30 +7,15 @@
 
 import Foundation
 
-public struct LoginDTO {
-	let success: Int
-	let login: String
-	let lastLoginDate: Date
-}
-
 protocol ILoginWorker {
-	func login(login: String, password: String) -> LoginDTO
+	func login(login: String, password: String) -> Bool
 }
 
 class LoginWorker: ILoginWorker {
-	func login(login: String, password: String) -> LoginDTO {
-		if login == "Admin" && password == "pa$$32!" {
-			return LoginDTO(
-				success: 1,
-				login: login,
-				lastLoginDate: Date()
-			)
-		} else {
-			return LoginDTO(
-				success: 0,
-				login: login,
-				lastLoginDate: Date()
-			)
-		}
+	private let validLogin = "Admin"
+	private let validPassword = "pa$$32!"
+	
+	func login(login: String, password: String) -> Bool {
+		login == validLogin && password == validPassword
 	}
 }

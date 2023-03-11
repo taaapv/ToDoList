@@ -17,7 +17,7 @@ class LoginViewController: UIViewController {
 	@IBOutlet weak var passwordTextField: UITextField!
 	
 	var interastor: ILoginInteractor?
-	var router: (NSObjectProtocol & ILoginRouter & LoginRouterDataPassing)?
+	var router: ILoginRouter?
 	
 	@IBAction func loginButtonTapped(_ sender: UIButton) {
 		if let login = loginTextField.text, let password = passwordTextField.text {
@@ -32,18 +32,11 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController: ILoginViewController {
 	func render(viewModel: LoginModels.ViewModel) {
-		switch viewModel.success {
-		case true:
+		switch viewModel {
+		case .success:
 			router?.routeToTaskList()
-		case false:
-			let alert = UIAlertController(
-				title: "Failure!",
-				message: "User did not exist",
-				preferredStyle: .alert
-			)
-			let action = UIAlertAction(title: "OK", style: .default)
-			alert.addAction(action)
-			present(alert, animated: true)
+		case .failure(let message):
+			router?.showError(with: message)
 		}
 	}
 }
